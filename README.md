@@ -2,25 +2,83 @@
 
 ## Learning Goals
 
-- Describe the common configuration options for TypeScript.
+- Automate TypeScript compilation with watch mode
+- Describe the common configuration options for TypeScript
 
 ## Introduction
 
-While the TypeScript compiler (the `tsc` command) can run without a
-configuration file (it has a set of defaults), it can also be customized
-extensively through a `json` configuration file named `tsconfig.json`.
+Before we continue with the TypeScript basics, let's make developing with
+TypeScript a bit easier. Currently, the way we learned to compile a `.ts` 
+file into `.js` is by running the `tsc <filename>` command. This was fine 
+for the small example file we practiced with, but now imagine we're actively
+developing a project. It would quickly become tedious having to save the file,
+run the `tsc` command, before finally being able to run the app with Node.js. 
+
+Additionally, we could forget to run the `tsc` command to begin with, resulting
+in frustration before figuring out why the changes we made are not applying.
+
+Thankfully, there's a way to avoid that with TypeScript's 'watch mode'.
+
+## Watch Mode 
+
+Watch mode keeps TypeScript's compiler running as we develop, watching for 
+changes made in a specified `.ts` file or any `.ts` file within a directory. 
+In watch mode, any time a change is made and saved, TypeScript will automatically
+recompile the changed file for us.
+
+To start watch mode, we use the `--watch` flag (or its shorter alias `-w`).
+For example, to watch a specific file named `app.ts` we would run: 
+
+```bash
+tsc app.ts --watch 
+```
+
+Terminal would then spit out something like the following to inform us that 
+watch mode is now running: 
+
+```bash
+[2:31:15 PM] Starting compilation in watch mode...
+
+[2:31:16 PM] Found 0 errors. Watching for file changes.
+```
+
+We still have to run a command, but with watch mode we only have to run it once 
+when we begin developing rather than after every change we make. 
+
+> **Note**: To exit watch mode when you're done developing for the time being,
+> use `Ctrl + C`
+
+## Watch Multiple Files 
+
+While all of the above is helpful, it still doesn't solve the problem when we 
+have multiple files we want to watch. However, as mentioned earlier, there is 
+a way to watch an entire directory at once. 
+
+Before we can do that, we first need to tell TypeScript that an entire directory 
+is a TypeScript project. We do so by running the following command once at the 
+root of the directory: 
+
+`tsc --init` 
+
+This initializes the directory as a TypeScript project. It will do so by 
+automatically generating a `json` configuration file named `tsconfig.json`. 
+We will go into more depth about this file later in this lesson. 
+
+After this initialization, we can now use watch mode without specifying a 
+file to watch, as TypeScript knows the entire directory is a TypeScript project. 
+To start it, we simply omit any file name and just attach the flag: 
+
+`tsc --watch` 
+
+Now, it will watch for changes made to any `.ts` file within that project 
+directory. 
 
 ## Configure TypeScript
 
-To create an initial copy of this file with some default values, run the
-following command:
-
-```typescript
-tsc --init
-```
-
-This will create a `tsconfig.json` file with default values, including the
-following:
+Before we continue learning about TypeScript's features, let's look closer 
+at the `tsconfig.json` file that was automatically generated during 
+initialization. This file allows us to customize our TypeScript projects. 
+Upon generation, it is filled with defaults such as the following:
 
 ```json
 {
@@ -42,12 +100,10 @@ following:
 }
 ```
 
-Note that your file may a) have slight different values for the options I
-included above and b) will definitely have many other entries in it that are
-commented out - those entries are provided as examples and commented out because
-they are not required in base configuration.
+Note that your file may have slightly different values for the options shown
+above and will definitely have many other entries in it that are commented out. Those entries are provided as examples and commented out because they are not required in base configuration.
 
-Let's discuss the few entries that are not commented out by default:
+Let's discuss the few entries shown above that are not commented out by default:
 
 1. `target`: since TypeScript needs to be compiled to be turned into JavaScript,
    we can actually take advantage of that step to not only convert our
@@ -80,8 +136,7 @@ Let's discuss the few entries that are not commented out by default:
    types that you explicitly use in your code.
 
 There are too many other available settings to cover them all here, but here are
-a few additional ones that you are likely to need to use over the course of
-these lessons:
+a few additional ones that you may eventually need to use:
 
 1. `lib`: allows you to specify additional libraries that TypeScript should be
    aware of
@@ -102,8 +157,17 @@ these lessons:
    use a very important part of Angular, which is the ability to decorate our
    code with annotations. We will cover that in more details in later sections.
 
-Here is a simplified, base version of `tsconfig.json` that we can use to compile
-the few examples we will cover in the rest of this section:
+## Set Up for the Following Lessons 
+
+Now that we know how to initialize a TypeScript project and utilize its very 
+helpful watch mode, we can start learning about the language's actual features. 
+Let's set up a directory where we can practice everything we will learn in this 
+section. 
+
+Create a directory called `ts-practice` and initialize it as a TypeScript project.
+Within the directory, create two sub-folders, one named `src` and the other `dist`.
+Replace your `tsconfig.json` with this simplified, base version that we can use to 
+compile the few examples we will cover in the rest of this section:
 
 ```json
 {
@@ -122,11 +186,13 @@ the few examples we will cover in the rest of this section:
 }
 ```
 
-With this configuration, I have all my project files in a directory called `qad`
-(which stands for "Quick And Dirty", which is a directory name I used when I
-just want to experiment with some files). In that directory, I have generated my
-based `tsconfig.json` and have also created a `src` directory with all my `.ts`
-files and a `dist` directory that will hold all my generated `.js` files. My
-file structure then looks like this:
+Take note that we've specified the `rootDir` as `src` and the `ourDir` as `dist`. 
+This means we want all our `.ts` files to be within `src` and all the compiled 
+`.js` files will be generated inside `dist`. 
 
-![Quick and Dirty File Structure](https://curriculum-content.s3.amazonaws.com/java-mod-8/ts-qad-file-structure.png)
+## Conclusion 
+
+Watch mode and project initialization streamlines the development process so that we 
+can focus on writing code. With all that under our belt, we're now equipped with all 
+the tools we need to start writing some TypeScript code. Let's utilize them to create 
+a TypeScript project directory where we can practice. 
