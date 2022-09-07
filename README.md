@@ -1,0 +1,132 @@
+# TypeScript Configuration
+
+## Learning Goals
+
+- Describe the common configuration options for TypeScript.
+
+## Introduction
+
+While the TypeScript compiler (the `tsc` command) can run without a
+configuration file (it has a set of defaults), it can also be customized
+extensively through a `json` configuration file named `tsconfig.json`.
+
+## Configure TypeScript
+
+To create an initial copy of this file with some default values, run the
+following command:
+
+```typescript
+tsc --init
+```
+
+This will create a `tsconfig.json` file with default values, including the
+following:
+
+```json
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+
+    /* Modules */
+    "module": "commonjs" /* Specify what module code is generated. */,
+
+    /* Interop Constraints */
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  }
+}
+```
+
+Note that your file may a) have slight different values for the options I
+included above and b) will definitely have many other entries in it that are
+commented out - those entries are provided as examples and commented out because
+they are not required in base configuration.
+
+Let's discuss the few entries that are not commented out by default:
+
+1. `target`: since TypeScript needs to be compiled to be turned into JavaScript,
+   we can actually take advantage of that step to not only convert our
+   TypeScript code into JavaScript, but also to target a specific version of
+   JavaScript. This can be advantageous for applications that need to support
+   older versions of browsers, for example.
+2. `module`: JavaScript supports the concept of "modules", which controls the
+   scope within which your variables, functions, classes, etc... available.
+   `commonjs` is the `Node` module loader and is fine for us to use at the
+   moment.
+3. `esModuleInterop`: the need for this module is pretty technical, but the high
+   level summary is that without this value set to `true`, the handling of
+   modules between TypeScript and JavaScript can result in errors.
+4. `forceConsistentCaseingInFileNames`: different Operating Systems (Windows,
+   MacOS, Linux, ...) have different rules for whether file names are case
+   sensitive. This can cause issues with imports if one person working in a
+   case-insensitive file system is allowed to commit an import that doesn't
+   match the actual case of the target file. Then someone who is in a
+   case-sensitive file system would not be able to run the same code. With this
+   setting to set `true`, TypeScript enforces that the imports must match the
+   case of the files in the file system.
+5. `strict`: this controls a family of settings related to how strict we are
+   asking TypeScript to be with types. For example, TypeScript has the ability
+   to enforce or ignore that all variables _must_ have a type, or that the type
+   of `any` is allowed. Setting this overall value to `true` also allows you to
+   then control sub-set of the strict typing of TypeScript with additional
+   configuration items, such as `strictNullChecks`, `noImplicitAny`, ...
+6. `skipLibCheck`: this tells the TypeScript compiler that it should not check
+   the types in all your declaration files. Instead, `tsc` will only check the
+   types that you explicitly use in your code.
+
+There are too many other available settings to cover them all here, but here are
+a few additional ones that you are likely to need to use over the course of
+these lessons:
+
+1. `lib`: allows you to specify additional libraries that TypeScript should be
+   aware of
+2. `declaration`: this is necessary if you want to export your custom types to
+   make them available as a library
+3. `outDir`: you can use this property to specify where your `.js` files will be
+   generated. By default, they are generated in the same directory as your `.ts`
+   files, but this can a) cause issues with namespaces because your IDE may not
+   know how to make the distinction between variables and functions in your
+   TypeScript vs variables and functions in your JavaScript.
+4. `include`: you can use this property in conjunction with the `outDir`
+   property to completely separate your TypeScript files from your JavaScript
+   files. The `include` property specifies the list of files `tsc` should look
+   for if it's called without an explicit list of files on the command line
+5. `rootDir`: tells the TypeScript compiler what directory should be used as the
+   base directory in the file structure that is generated by the compiler
+6. `experimentalDecorators`: this one _must_ be set to `true` in order for us to
+   use a very important part of Angular, which is the ability to decorate our
+   code with annotations. We will cover that in more details in later sections.
+
+Here is a simplified, base version of `tsconfig.json` that we can use to compile
+the few examples we will cover in the rest of this section:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "outDir": "./dist",
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "include": ["src/**/*", "test/**/*"]
+}
+```
+
+With this configuration, I have all my project files in a directory called `qad`
+(which stands for "Quick And Dirty", which is a directory name I used when I
+just want to experiment with some files). In that directory, I have generated my
+based `tsconfig.json` and have also created a `src` directory with all my `.ts`
+files and a `dist` directory that will hold all my generated `.js` files. My
+file structure then looks like this:
+
+![Quick and Dirty File Structure](https://curriculum-content.s3.amazonaws.com/java-mod-8/ts-qad-file-structure.png)
