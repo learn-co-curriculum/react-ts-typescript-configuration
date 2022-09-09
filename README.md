@@ -166,39 +166,6 @@ a few additional ones that you may eventually need to use:
    use a very important part of Angular, which is the ability to decorate our
    code with annotations. We will cover that in more details in later sections.
 
-## Set Up for the Following Lessons 
-
-Now that we know how to initialize a TypeScript project and utilize its very 
-helpful watch mode, we can start learning about the language's actual features. 
-Let's set up a directory where we can practice everything we will learn in this 
-section. 
-
-Create a directory called `ts-practice` and initialize it as a TypeScript project.
-Within the directory, create two sub-folders, one named `src` and the other `dist`.
-Replace your `tsconfig.json` with this simplified, base version that we can use to 
-compile the few examples we will cover in the rest of this section:
-
-```json
-{
-  "compilerOptions": {
-    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
-    "module": "commonjs" /* Specify what module code is generated. */,
-    "rootDir": "./src" /* Specify the root folder within your source files. */,
-    "outDir": "./dist",
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": true /* Enable all strict type-checking options. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  },
-  "include": ["src/**/*", "test/**/*"]
-}
-```
-
-Take note that we've specified the `rootDir` as `src` and the `outDir` as `dist`. 
-This means we want all our `.ts` files to be within `src` and all the compiled 
-`.js` files will be generated inside `dist`. 
-
 ## Conclusion 
 
 Watch mode and project initialization streamlines the development process so that we 
